@@ -1,0 +1,47 @@
+package com.service.bookinghotels.entities;
+import jakarta.persistence.*;
+import lombok.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "rooms")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString
+public class Room {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "number")
+    private Integer number;
+
+    @Column(name = "price")
+    private BigDecimal price;
+
+    @Column(name = "max_people_per_room")
+    private Integer maxPeoplePerRoom;
+
+    @Column(name = "busy_dates_room")
+    @Builder.Default
+    private Set<LocalDate> busyDates = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    @ToString.Exclude
+    private Hotel hotel;
+}
