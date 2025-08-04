@@ -16,4 +16,6 @@ public interface HotelService {
     List<Hotel> getAllHotels(HotelFilter filter);
 
     Hotel getHotelByName(String name);
+
+    void updateHotelRating(Long id, Integer rating);
 }

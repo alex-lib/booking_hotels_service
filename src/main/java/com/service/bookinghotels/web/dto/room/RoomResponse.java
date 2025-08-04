@@ -11,6 +11,8 @@ import java.util.Set;
 @Builder
 public class RoomResponse {
 
+    private Long id;
+
     private String name;
 
     private String description;

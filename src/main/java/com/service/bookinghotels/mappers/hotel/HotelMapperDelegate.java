@@ -1,5 +1,7 @@
 package com.service.bookinghotels.mappers.hotel;
 import com.service.bookinghotels.entities.Hotel;
+import com.service.bookinghotels.web.dto.booking.BookingResponse;
+import com.service.bookinghotels.web.dto.booking.BookingsListResponse;
 import com.service.bookinghotels.web.dto.hotel.HotelRequest;
 import com.service.bookinghotels.web.dto.hotel.HotelResponse;
 import com.service.bookinghotels.web.dto.hotel.HotelsListResponse;
@@ -28,22 +30,24 @@ public abstract class HotelMapperDelegate implements HotelMapper {
     @Override
     public HotelResponse hotelToHotelResponse(Hotel hotel) {
         return HotelResponse.builder()
+                .id(hotel.getId())
                 .name(hotel.getName())
                 .title(hotel.getTitle())
                 .city(hotel.getCity())
                 .address(hotel.getAddress())
                 .distanceFromCityCentre(hotel.getDistanceFromCityCentre())
                 .rating(hotel.getRating())
-                .gradesCounts(hotel.getGradesCounts())
+                .gradesCount(hotel.getGradesCount())
                 .build();
     }
 
     @Override
     public HotelsListResponse hotelListToHotelsListResponse(List<Hotel> hotels) {
-        HotelsListResponse list = new HotelsListResponse();
-        for (Hotel hotel : hotels) {
-            list.getHotels().add(hotelToHotelResponse(hotel));
-        }
-        return list;
+        List<HotelResponse> list = hotels.stream()
+                .map(this::hotelToHotelResponse)
+                .toList();
+        return HotelsListResponse.builder()
+                .hotels(list)
+                .build();
     }
 }

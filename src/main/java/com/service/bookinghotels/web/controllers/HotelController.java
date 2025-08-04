@@ -8,10 +8,11 @@ import com.service.bookinghotels.web.dto.hotel.HotelsListResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/hotels")
+@RequestMapping("/hotel")
 @RequiredArgsConstructor
 public class HotelController {
 
@@ -21,13 +22,15 @@ public class HotelController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public HotelResponse createHotel(@RequestBody HotelRequest hotelRequest) {
        return hotelMapper.hotelToHotelResponse(hotelService
                .createHotel(hotelMapper.hotelRequestToHotel(hotelRequest)));
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public HotelResponse findHotelById(@PathVariable Long id) {
         return hotelMapper.hotelToHotelResponse(hotelService
                 .getHotelById(id));
@@ -35,20 +38,31 @@ public class HotelController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public HotelResponse updateHotel(@PathVariable Long id, @RequestBody HotelRequest hotelRequest) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public HotelResponse updateHotel(@PathVariable Long id,
+                                     @RequestBody HotelRequest hotelRequest) {
         return hotelMapper.hotelToHotelResponse(hotelService
                 .updateHotel(id, hotelMapper.hotelRequestToHotel(id, hotelRequest)));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteBook(@PathVariable Long id) {
         hotelService.deleteHotel(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
+    @GetMapping("/find-all")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public HotelsListResponse findAllHotels(@Valid HotelFilter filter) {
         return hotelMapper.hotelListToHotelsListResponse(hotelService.getAllHotels(filter));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/set-rating/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    public void updateHotelRating(@PathVariable Long id, @RequestParam Integer rating) {
+        hotelService.updateHotelRating(id, rating);
     }
 }

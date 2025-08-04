@@ -36,11 +36,11 @@ public class Hotel {
 
     @Builder.Default
     @Column(name = "rating")
-    private Integer rating = 0;
+    private Double rating = 0.0;
 
     @Builder.Default
     @Column(name = "grades_counts")
-    private Integer gradesCounts = 0;
+    private Integer gradesCount = 0;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     @ToString.Exclude

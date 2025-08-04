@@ -8,6 +8,8 @@ import lombok.*;
 @Builder
 public class HotelResponse {
 
+    private Long id;
+
     private String name;
 
     private String title;
@@ -18,7 +20,7 @@ public class HotelResponse {
 
     private Double distanceFromCityCentre;
 
-    private Integer rating;
+    private Double rating;
 
-    private Integer gradesCounts;
+    private Integer gradesCount;
 }

@@ -30,7 +30,7 @@ public class RoomServiceImpl implements RoomService {
     public Room createRoom(Room room) {
         log.info("Call method createRoom to create room: {}", room);
         if (getRoomByName(room.getName()) != null) {
-            throw new EntityIsExistedException("Such room is already existed");
+            throw new EntityIsExistedException("Such room's name is already existed");
         }
         return roomRepository.save(room);
     }

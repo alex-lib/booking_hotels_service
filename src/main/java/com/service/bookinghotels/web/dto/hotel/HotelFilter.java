@@ -13,4 +13,20 @@ public class HotelFilter {
     private Integer page;
 
     private Integer size;
+
+    private Long id;
+
+    private String title;
+
+    private String name;
+
+    private String city;
+
+    private String address;
+
+    private Double distanceFromCityCentre;
+
+    private Double rating;
+
+    private Integer gradesCount;
 }

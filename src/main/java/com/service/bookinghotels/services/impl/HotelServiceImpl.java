@@ -4,6 +4,7 @@ import com.service.bookinghotels.exceptions.EntityIsExistedException;
 import com.service.bookinghotels.exceptions.EntityNotFoundException;
 import com.service.bookinghotels.repositories.HotelRepository;
 import com.service.bookinghotels.services.HotelService;
+import com.service.bookinghotels.services.HotelSpecification;
 import com.service.bookinghotels.utils.BeanUtils;
 import com.service.bookinghotels.web.dto.hotel.HotelFilter;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,10 @@ public class HotelServiceImpl implements HotelService {
     public Hotel createHotel(Hotel hotel) {
         log.info("Call method createHotel to create hotel: {}", hotel);
         if (getHotelByName(hotel.getName()) != null) {
-            throw new EntityIsExistedException("Such hotel is already existed");
+            throw new EntityIsExistedException("Such hotel's name is already existed");
         }
         return hotelRepository.save(hotel);
     }
-
 
     @Transactional
     @Override
@@ -59,8 +59,8 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public List<Hotel> getAllHotels(HotelFilter filter) {
         log.info("Call method getAllHotels");
-        return hotelRepository.findAll(PageRequest.of(filter.getPage(),
-                filter.getSize())).getContent();
+        return hotelRepository.findAll(HotelSpecification.withFilter(filter),
+                PageRequest.of(filter.getPage(), filter.getSize())).getContent();
     }
 
     @Transactional(readOnly = true)
@@ -68,5 +68,21 @@ public class HotelServiceImpl implements HotelService {
     public Hotel getHotelByName(String name) {
         log.info("Call method getHotelByName to find hotel with name: {}", name);
         return hotelRepository.getHotelByName(name);
+    }
+
+    @Transactional
+    @Override
+    public void updateHotelRating(Long id, Integer newMark) {
+        if (newMark < 1 || newMark > 5) {
+            throw new IllegalArgumentException("Rating must be between 1 and 5");
+        }
+        log.info("Call method updateHotelRating to update hotel rating: {} for hotel with id: {}", newMark, id);
+        Hotel hotel = getHotelById(id);
+        double totalRating = hotel.getRating() * hotel.getGradesCount();
+        totalRating = totalRating - hotel.getRating() + newMark;
+        double newRating = (double) Math.round((totalRating / hotel.getGradesCount() + 1) * 10) / 10;
+        hotel.setGradesCount(hotel.getRooms().size() + 1);
+        hotel.setRating(newRating);
+        hotelRepository.save(hotel);
     }
 }

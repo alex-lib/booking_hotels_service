@@ -32,6 +32,7 @@ public abstract class RoomMapperDelegate implements RoomMapper {
     @Override
     public RoomResponse roomToRoomResponse(Room room) {
         return RoomResponse.builder()
+                .id(room.getId())
                 .name(room.getName())
                 .description(room.getDescription())
                 .number(room.getNumber())
