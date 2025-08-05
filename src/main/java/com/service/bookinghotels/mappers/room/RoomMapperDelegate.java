@@ -1,14 +1,16 @@
 package com.service.bookinghotels.mappers.room;
 import com.service.bookinghotels.entities.Room;
+import com.service.bookinghotels.entities.UnavailableDate;
 import com.service.bookinghotels.services.HotelService;
 import com.service.bookinghotels.web.dto.room.RoomRequest;
 import com.service.bookinghotels.web.dto.room.RoomResponse;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 public abstract class RoomMapperDelegate implements RoomMapper {
 
-    private final HotelService hotelService;
+    @Autowired
+    private HotelService hotelService;
 
     @Override
     public Room roomRequestToRoom(RoomRequest roomRequest) {
@@ -38,7 +40,9 @@ public abstract class RoomMapperDelegate implements RoomMapper {
                 .number(room.getNumber())
                 .price(room.getPrice())
                 .maxPeoplePerRoom(room.getMaxPeoplePerRoom())
-                .busyDates(room.getBusyDates())
+                .busyDates(room.getBusyDates().stream()
+                        .map(UnavailableDate::getDate)
+                        .collect(Collectors.toSet()))
                 .hotelId(room.getHotel().getId())
                 .build();
     }

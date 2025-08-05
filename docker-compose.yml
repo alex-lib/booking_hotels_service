@@ -14,15 +14,15 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  book-service-app:
-    build: .
-    container_name: bookinghotels-app
-    depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-      SERVER_PORT: ${APP_PORT}
-    ports:
-      - "${APP_PORT}:${APP_PORT}"
+#  book-service-app:
+#    build: .
+#    container_name: bookinghotels-app
+#    depends_on:
+#      - postgres
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+#      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+#      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+#      SERVER_PORT: ${APP_PORT}
+#    ports:
+#      - "${APP_PORT}:${APP_PORT}"

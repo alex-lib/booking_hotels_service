@@ -4,7 +4,7 @@ import com.service.bookinghotels.exceptions.EntityIsExistedException;
 import com.service.bookinghotels.exceptions.EntityNotFoundException;
 import com.service.bookinghotels.repositories.HotelRepository;
 import com.service.bookinghotels.services.HotelService;
-import com.service.bookinghotels.services.HotelSpecification;
+import com.service.bookinghotels.services.specifications.HotelSpecification;
 import com.service.bookinghotels.utils.BeanUtils;
 import com.service.bookinghotels.web.dto.hotel.HotelFilter;
 import lombok.RequiredArgsConstructor;

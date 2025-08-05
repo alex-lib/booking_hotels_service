@@ -6,6 +6,7 @@ import com.service.bookinghotels.exceptions.RoomIsBusyException;
 import com.service.bookinghotels.repositories.BookingRepository;
 import com.service.bookinghotels.repositories.RoomRepository;
 import com.service.bookinghotels.services.BookingService;
+import com.service.bookinghotels.services.UnavailableDatesService;
 import com.service.bookinghotels.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +26,8 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
 
     private final RoomRepository roomRepository;
+
+    private final UnavailableDatesService unavailableDatesService;
 
     @Transactional
     @Override
@@ -71,8 +74,10 @@ public class BookingServiceImpl implements BookingService {
 
     private void setNewBusyDatesForRoom(Booking booking) {
         Room room = booking.getRoom();
-        List<LocalDate> datesToLive = new ArrayList<>();
-        for (LocalDate i = booking.getCheckInDate(); !i.isEqual(booking.getCheckOutDate()); i.plusDays(1)) {
+        Set<LocalDate> datesToLive = new HashSet<>();
+        for (LocalDate i = booking.getCheckInDate();
+             !i.isEqual(booking.getCheckOutDate().plusDays(1));
+             i.plusDays(1)) {
             datesToLive.add(i);
         }
         if (room.getBusyDates().stream().anyMatch(datesToLive::contains)) {
@@ -81,23 +86,19 @@ public class BookingServiceImpl implements BookingService {
                     .format("Room is busy on some or all of pointed dates: {1}. Total busy dates: {0}",
                             datesToLive, room.getBusyDates()));
         }
-        Set<LocalDate> set = room.getBusyDates();
-        set.addAll(datesToLive);
-        room.setBusyDates(set);
+        unavailableDatesService.addBusyDates(room.getId(), datesToLive);
         roomRepository.save(room);
     }
 
     private void deletePreviousBusyDatesForRoom(Booking booking) {
         Room room = booking.getRoom();
-        Set<LocalDate> set = room.getBusyDates();
-        List<LocalDate> datesToLiveBeforeUpdating = new ArrayList<>();
-        for (LocalDate i = booking.getCheckInDate(); !i.isEqual(booking.getCheckOutDate()); i.plusDays(1)) {
+        Set<LocalDate> datesToLiveBeforeUpdating = new HashSet<>();
+        for (LocalDate i = booking.getCheckInDate();
+             !i.isEqual(booking.getCheckOutDate().plusDays(1));
+             i.plusDays(1)) {
             datesToLiveBeforeUpdating.add(i);
         }
-        for (LocalDate i : datesToLiveBeforeUpdating) {
-            set.remove(i);
-        }
-        room.setBusyDates(set);
+        unavailableDatesService.deleteBusyDates(room.getId(), datesToLiveBeforeUpdating);
         roomRepository.save(room);
     }
 }

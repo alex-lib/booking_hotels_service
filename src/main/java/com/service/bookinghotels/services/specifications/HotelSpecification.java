@@ -1,4 +1,4 @@
-package com.service.bookinghotels.services;
+package com.service.bookinghotels.services.specifications;
 import com.service.bookinghotels.entities.Hotel;
 import com.service.bookinghotels.web.dto.hotel.HotelFilter;
 import org.springframework.data.jpa.domain.Specification;

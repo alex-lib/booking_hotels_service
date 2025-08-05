@@ -1,5 +1,7 @@
 package com.service.bookinghotels.services;
 import com.service.bookinghotels.entities.Room;
+import com.service.bookinghotels.web.dto.room.RoomFilter;
+import java.util.List;
 
 public interface RoomService {
 
@@ -12,4 +14,6 @@ public interface RoomService {
     void deleteRoom(Long id);
 
     Room getRoomByName(String name);
+
+    List<Room> getAllRooms(RoomFilter filter);
 }

@@ -3,8 +3,15 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:bookservicedb
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:8432/app_schema
+    username: postgres
+    password: postgres
+    hikari:
+      schema: app_schema
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS app_schema;
+      connection-timeout: 10000
+#    url: jdbc:h2:mem:bookservicedb
+#    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: 'create-drop'
@@ -19,3 +26,7 @@ server:
 #    enabled: true
 #  api-docs:
 #    enabled: true
+
+app:
+  security:
+    type: db

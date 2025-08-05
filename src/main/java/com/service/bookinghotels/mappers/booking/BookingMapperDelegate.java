@@ -8,22 +8,25 @@ import com.service.bookinghotels.services.RoomService;
 import com.service.bookinghotels.services.UserService;
 import com.service.bookinghotels.web.dto.booking.BookingRequest;
 import com.service.bookinghotels.web.dto.booking.BookingResponse;
-import com.service.bookinghotels.web.dto.booking.BookingsListResponse;
 import com.service.bookinghotels.web.dto.room.RoomResponse;
 import com.service.bookinghotels.web.dto.user.UserResponse;
 import lombok.RequiredArgsConstructor;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiredArgsConstructor
 public abstract class BookingMapperDelegate implements BookingMapper {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    private final RoomService roomService;
+    @Autowired
+    private RoomService roomService;
 
-    private final RoomMapper roomMapper;
+    @Autowired
+    private RoomMapper roomMapper;
 
-    private final UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public Booking bookingRequestToBooking(BookingRequest bookingRequest) {
@@ -54,16 +57,6 @@ public abstract class BookingMapperDelegate implements BookingMapper {
                 .checkOutDate(booking.getCheckOutDate())
                 .userResponse(userResponse)
                 .roomResponse(roomResponse)
-                .build();
-    }
-
-    @Override
-    public BookingsListResponse bookingListToBookingsListResponse(List<Booking> bookings) {
-        List<BookingResponse> list = bookings.stream()
-                .map(this::bookingToBookingResponse)
-                .toList();
-        return BookingsListResponse.builder()
-                .bookings(list)
                 .build();
     }
 }

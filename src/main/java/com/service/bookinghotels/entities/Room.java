@@ -2,7 +2,6 @@ package com.service.bookinghotels.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +39,8 @@ public class Room {
 
     @Column(name = "busy_dates_room")
     @Builder.Default
-    private Set<LocalDate> busyDates = new HashSet<>();
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UnavailableDate> busyDates = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
