@@ -10,9 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class HotelFilter {
 
-    private Integer page;
+    private Integer pageNumber;
 
-    private Integer size;
+    private Integer pageSize;
 
     private Long id;
 

@@ -48,7 +48,7 @@ public class HotelController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteBook(@PathVariable Long id) {
+    public void deleteHotel(@PathVariable Long id) {
         hotelService.deleteHotel(id);
     }
 
@@ -56,7 +56,9 @@ public class HotelController {
     @GetMapping("/find-all")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public HotelsListResponse findAllHotels(@Valid HotelFilter filter) {
-        return hotelMapper.hotelListToHotelsListResponse(hotelService.getAllHotels(filter));
+        HotelsListResponse hotelsListResponse = hotelMapper.hotelListToHotelsListResponse(hotelService.getAllHotels(filter));
+        hotelsListResponse.setTotalCountHotels(hotelService.getAllHotelsWithoutFilters().size());
+        return hotelsListResponse;
     }
 
     @ResponseStatus(HttpStatus.OK)

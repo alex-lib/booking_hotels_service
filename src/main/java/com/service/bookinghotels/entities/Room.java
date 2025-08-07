@@ -39,7 +39,7 @@ public class Room {
 
     @Column(name = "busy_dates_room")
     @Builder.Default
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private Set<UnavailableDate> busyDates = new HashSet<>();
 
     @ManyToOne

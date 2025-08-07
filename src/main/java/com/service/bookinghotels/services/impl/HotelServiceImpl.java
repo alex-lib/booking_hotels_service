@@ -60,7 +60,14 @@ public class HotelServiceImpl implements HotelService {
     public List<Hotel> getAllHotels(HotelFilter filter) {
         log.info("Call method getAllHotels");
         return hotelRepository.findAll(HotelSpecification.withFilter(filter),
-                PageRequest.of(filter.getPage(), filter.getSize())).getContent();
+                PageRequest.of(filter.getPageNumber(), filter.getPageSize())).getContent();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Hotel> getAllHotelsWithoutFilters() {
+        log.info("Call method getAllHotelsWithoutFilters");
+        return hotelRepository.findAll();
     }
 
     @Transactional(readOnly = true)
@@ -80,8 +87,8 @@ public class HotelServiceImpl implements HotelService {
         Hotel hotel = getHotelById(id);
         double totalRating = hotel.getRating() * hotel.getGradesCount();
         totalRating = totalRating - hotel.getRating() + newMark;
-        double newRating = (double) Math.round((totalRating / hotel.getGradesCount() + 1) * 10) / 10;
-        hotel.setGradesCount(hotel.getRooms().size() + 1);
+        hotel.setGradesCount(hotel.getGradesCount() + 1);
+        double newRating = (double) Math.round((totalRating / hotel.getGradesCount()) * 10) / 10;
         hotel.setRating(newRating);
         hotelRepository.save(hotel);
     }

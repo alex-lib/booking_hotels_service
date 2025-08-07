@@ -6,6 +6,7 @@ import com.service.bookinghotels.mappers.user.UserMapper;
 import com.service.bookinghotels.services.UserService;
 import com.service.bookinghotels.web.dto.user.UserRequest;
 import com.service.bookinghotels.web.dto.user.UserResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +25,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public UserResponse createUser(@RequestBody UserRequest userRequest, @RequestParam RoleType roleType) {
+    public UserResponse createUser(@RequestBody @Valid UserRequest userRequest,
+                                   @RequestParam RoleType roleType) {
         User newUser = userService.createUser(userMapper.userRequestToUser(userRequest), roleType);
         return userMapper.userToUserResponse(newUser);
     }
@@ -44,8 +46,8 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @CheckUserAccess
     public UserResponse updateUser(@PathVariable Long id,
-                                   @RequestBody UserRequest userRequest,
-                                   @AuthenticationPrincipal UserDetails user) {
+                                   @AuthenticationPrincipal UserDetails user,
+                                   @RequestBody @Valid UserRequest userRequest) {
         return userMapper.userToUserResponse(userService
                 .updateUser(id, userMapper.userRequestToUser(id, userRequest)));
     }

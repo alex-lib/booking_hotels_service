@@ -1,8 +1,6 @@
 package com.service.bookinghotels.web.controllers;
 import com.service.bookinghotels.mappers.room.RoomMapper;
 import com.service.bookinghotels.services.RoomService;
-import com.service.bookinghotels.web.dto.hotel.HotelFilter;
-import com.service.bookinghotels.web.dto.hotel.HotelsListResponse;
 import com.service.bookinghotels.web.dto.room.RoomFilter;
 import com.service.bookinghotels.web.dto.room.RoomRequest;
 import com.service.bookinghotels.web.dto.room.RoomResponse;

@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class EmailValidValidator implements ConstraintValidator<EmailValid, String> {
 
-    private static final String REGEX = "[0-9a-zA-Z_-]+@[a-zA-Z]+\\.[a-zA-Z]{2,3}";
+    private static final String REGEX = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";;
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {

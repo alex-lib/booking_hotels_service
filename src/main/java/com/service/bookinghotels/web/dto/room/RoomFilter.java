@@ -12,9 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class RoomFilter {
 
-    private Integer page;
+    private Integer pageNumber;
 
-    private Integer size;
+    private Integer pageSize;
 
     private Long roomId;
 

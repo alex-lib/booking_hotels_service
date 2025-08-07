@@ -14,6 +14,9 @@ public abstract class RoomMapperDelegate implements RoomMapper {
 
     @Override
     public Room roomRequestToRoom(RoomRequest roomRequest) {
+
+        Long hotelId = hotelService.getHotelById(roomRequest.getHotelId()).getId();
+
         return Room.builder()
                 .name(roomRequest.getName())
                 .description(roomRequest.getDescription())
@@ -25,9 +28,9 @@ public abstract class RoomMapperDelegate implements RoomMapper {
     }
 
     @Override
-    public Room roomRequestToRoom(Long hotelId, RoomRequest roomRequest) {
+    public Room roomRequestToRoom(Long roomId, RoomRequest roomRequest) {
         Room room = roomRequestToRoom(roomRequest);
-        room.setId(hotelId);
+        room.setId(roomId);
         return room;
     }
 

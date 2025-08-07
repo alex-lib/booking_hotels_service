@@ -8,6 +8,6 @@ public class HotelFilterValidValidator implements ConstraintValidator<HotelFilte
 
     @Override
     public boolean isValid(HotelFilter filter, ConstraintValidatorContext constraintValidatorContext) {
-        return !ObjectUtils.anyNull(filter.getPage(), filter.getSize());
+        return !ObjectUtils.anyNull(filter.getPageNumber(), filter.getPageSize());
     }
 }

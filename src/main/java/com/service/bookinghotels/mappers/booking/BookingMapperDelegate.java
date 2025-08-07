@@ -12,6 +12,7 @@ import com.service.bookinghotels.web.dto.room.RoomResponse;
 import com.service.bookinghotels.web.dto.user.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @RequiredArgsConstructor
 public abstract class BookingMapperDelegate implements BookingMapper {
@@ -29,11 +30,11 @@ public abstract class BookingMapperDelegate implements BookingMapper {
     private UserMapper userMapper;
 
     @Override
-    public Booking bookingRequestToBooking(BookingRequest bookingRequest) {
-        User user = userService.getUserById(bookingRequest.getUserId());
+    public Booking bookingRequestToBooking(BookingRequest bookingRequest, UserDetails user) {
+        User currentUser = userService.getUserByName(user.getUsername());
         Room room = roomService.getRoomById(bookingRequest.getRoomId());
         return Booking.builder()
-                .user(user)
+                .user(currentUser)
                 .room(room)
                 .checkInDate(bookingRequest.getCheckInDate())
                 .checkOutDate(bookingRequest.getCheckOutDate())
@@ -41,8 +42,8 @@ public abstract class BookingMapperDelegate implements BookingMapper {
     }
 
     @Override
-    public Booking bookingRequestToBooking(Long bookingId, BookingRequest bookingRequest) {
-        Booking booking = bookingRequestToBooking(bookingRequest);
+    public Booking bookingRequestToBooking(Long bookingId, BookingRequest bookingRequest, UserDetails user) {
+        Booking booking = bookingRequestToBooking(bookingRequest, user);
         booking.setId(bookingId);
         return booking;
     }

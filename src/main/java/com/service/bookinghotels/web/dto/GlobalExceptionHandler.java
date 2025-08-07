@@ -1,6 +1,7 @@
 package com.service.bookinghotels.web.dto;
 import com.service.bookinghotels.exceptions.EntityIsExistedException;
 import com.service.bookinghotels.exceptions.EntityNotFoundException;
+import com.service.bookinghotels.exceptions.RoomIsBusyException;
 import com.service.bookinghotels.web.dto.errors.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
-        log.error("Exception: {}", ex.getMessage());
+        log.error("IllegalArgumentException: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(RoomIsBusyException.class)
+    public ResponseEntity<ErrorResponse> handleRoomIsBusyException(RoomIsBusyException ex) {
+        log.error("RoomIsBusyException: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(ex.getMessage()));
     }
 }

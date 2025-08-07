@@ -18,4 +18,6 @@ public interface HotelService {
     Hotel getHotelByName(String name);
 
     void updateHotelRating(Long id, Integer rating);
+
+    List<Hotel> getAllHotelsWithoutFilters ();
 }

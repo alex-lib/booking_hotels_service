@@ -4,14 +4,15 @@ import com.service.bookinghotels.entities.roles.Role;
 import com.service.bookinghotels.entities.roles.RoleType;
 import com.service.bookinghotels.exceptions.EntityIsExistedException;
 import com.service.bookinghotels.exceptions.EntityNotFoundException;
+import com.service.bookinghotels.repositories.RoleRepository;
 import com.service.bookinghotels.repositories.UserRepository;
 import com.service.bookinghotels.services.UserService;
 import com.service.bookinghotels.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collections;
 
 @Service
@@ -20,6 +21,10 @@ import java.util.Collections;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final RoleRepository roleRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -32,14 +37,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User createUser(User user, RoleType roleType) {
-        user.setRoles(Collections.singletonList(Role.from(roleType)));
         log.info("Call method createUser to create user: {}", user);
         if (getUserByName(user.getName()) != null) {
             throw new EntityIsExistedException("Such user's name is already existed");
         }
-        if (isUserExistsByNameAndEmail(user.getName(), user.getEmail())) {
-            throw new EntityIsExistedException("User with such email and name is already existed");
+        if (getUserByEmail(user.getEmail()) != null) {
+            throw new EntityIsExistedException("User with such email is already existed");
         }
+        Role role = Role.from(roleType);
+        user.setRoles(Collections.singletonList(Role.from(roleType)));
+        role.setUser(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        roleRepository.save(role);
         return userRepository.save(user);
     }
 
@@ -68,7 +77,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public boolean isUserExistsByNameAndEmail(String name, String email) {
-        return userRepository.isUserExistsByNameAndEmail(name, email);
+    public User getUserByEmail(String email) {
+        log.info("Call method getUserByEmail to find user with email: {}", email);
+        return userRepository.getUserByEmail(email);
     }
 }

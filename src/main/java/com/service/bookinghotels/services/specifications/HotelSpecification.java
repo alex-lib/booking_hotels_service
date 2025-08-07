@@ -54,7 +54,7 @@ public interface HotelSpecification {
     static Specification<Hotel> byHotelDistanceFromCityCentre(Double distanceFromCityCentre) {
         return ((root, query, criteriaBuilder) -> {
             if (distanceFromCityCentre == null) return null;
-            return criteriaBuilder.equal(root.get("distance_from_city_centre"), distanceFromCityCentre);
+            return criteriaBuilder.equal(root.get("distanceFromCityCentre"), distanceFromCityCentre);
         });
     }
 
@@ -68,9 +68,7 @@ public interface HotelSpecification {
     static Specification<Hotel> byHotelGradesCount(Integer gradesCount) {
         return ((root, query, criteriaBuilder) -> {
             if (gradesCount == null) return null;
-            return criteriaBuilder.equal(root.get("grades_counts"), gradesCount);
+            return criteriaBuilder.equal(root.get("gradesCount"), gradesCount);
         });
         }
     }
-
-

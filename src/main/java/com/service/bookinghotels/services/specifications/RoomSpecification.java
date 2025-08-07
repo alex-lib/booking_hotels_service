@@ -65,7 +65,9 @@ public interface RoomSpecification {
 
     static Specification<Room> byCheckInAndCheckOutDates(LocalDate checkInDate, LocalDate checkOutDate) {
         return (root, query, cb) -> {
-            if (checkInDate == null || checkOutDate == null) return null;
+            if (checkInDate == null && checkOutDate == null) return null;
+            if ((checkInDate != null && checkOutDate == null) || (checkOutDate != null && checkInDate == null))
+                throw new IllegalArgumentException("Both check-in and check-out dates must be specified or none of them must be specified");
             Subquery<UnavailableDate> subquery = query.subquery(UnavailableDate.class);
             Root<UnavailableDate> unavailableRoot = subquery.from(UnavailableDate.class);
             subquery.select(unavailableRoot);

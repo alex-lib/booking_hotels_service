@@ -2,9 +2,7 @@ package com.service.bookinghotels.mappers.hotel;
 import com.service.bookinghotels.entities.Hotel;
 import com.service.bookinghotels.web.dto.hotel.HotelRequest;
 import com.service.bookinghotels.web.dto.hotel.HotelResponse;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public abstract class HotelMapperDelegate implements HotelMapper {
 
     @Override

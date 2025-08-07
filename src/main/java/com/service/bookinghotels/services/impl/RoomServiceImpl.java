@@ -66,6 +66,6 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> getAllRooms(RoomFilter filter) {
         log.info("Call method getAllRooms");
         return roomRepository.findAll(RoomSpecification.withFilter(filter),
-                PageRequest.of(filter.getPage(), filter.getSize())).getContent();
+                PageRequest.of(filter.getPageNumber(), filter.getPageSize())).getContent();
     }
 }

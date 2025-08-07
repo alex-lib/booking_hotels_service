@@ -9,6 +9,7 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -18,10 +19,10 @@ public interface BookingMapper {
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "room", ignore = true)
-    Booking bookingRequestToBooking(BookingRequest bookingRequest);
+    Booking bookingRequestToBooking(BookingRequest bookingRequest, UserDetails user);
 
     @Mapping(source = "bookingId", target = "id")
-    Booking bookingRequestToBooking(Long bookingId, BookingRequest bookingRequest);
+    Booking bookingRequestToBooking(Long bookingId, BookingRequest bookingRequest, UserDetails user);
 
     BookingResponse bookingToBookingResponse(Booking booking);
 
