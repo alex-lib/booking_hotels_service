@@ -1,5 +1,6 @@
 package com.service.bookinghotels.mappers.user;
 import com.service.bookinghotels.entities.User;
+import com.service.bookinghotels.web.dto.kafkadto.RegistrationUserEvent;
 import com.service.bookinghotels.web.dto.user.UserRequest;
 import com.service.bookinghotels.web.dto.user.UserResponse;
 import org.mapstruct.DecoratedWith;
@@ -17,4 +18,12 @@ public interface UserMapper {
     User userRequestToUser(Long userId, UserRequest userRequest);
 
     UserResponse userToUserResponse(User user);
+
+    default RegistrationUserEvent userToRegistrationUserEvent(User user) {
+        return RegistrationUserEvent.builder()
+                .userId(user.getId())
+                .userName(user.getName())
+                .email(user.getEmail())
+                .build();
+    }
 }

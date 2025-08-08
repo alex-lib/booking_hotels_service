@@ -3,7 +3,7 @@ import com.service.bookinghotels.entities.Room;
 import com.service.bookinghotels.entities.UnavailableDate;
 import com.service.bookinghotels.repositories.UnavailableDateRepository;
 import com.service.bookinghotels.services.RoomService;
-import com.service.bookinghotels.services.UnavailableDatesService;
+import com.service.bookinghotels.services.UnavailableDateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UnavailableDatesServiceImpl implements UnavailableDatesService {
+public class UnavailableDateServiceImpl implements UnavailableDateService {
 
     private final UnavailableDateRepository unavailableDateRepository;
 

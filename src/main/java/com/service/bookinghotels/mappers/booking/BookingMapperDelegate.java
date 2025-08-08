@@ -8,6 +8,7 @@ import com.service.bookinghotels.services.RoomService;
 import com.service.bookinghotels.services.UserService;
 import com.service.bookinghotels.web.dto.booking.BookingRequest;
 import com.service.bookinghotels.web.dto.booking.BookingResponse;
+import com.service.bookinghotels.web.dto.kafkadto.BookingRoomEvent;
 import com.service.bookinghotels.web.dto.room.RoomResponse;
 import com.service.bookinghotels.web.dto.user.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,17 @@ public abstract class BookingMapperDelegate implements BookingMapper {
                 .checkOutDate(booking.getCheckOutDate())
                 .userResponse(userResponse)
                 .roomResponse(roomResponse)
+                .build();
+    }
+
+    @Override
+    public BookingRoomEvent bookingToBookingRoomEvent(Booking booking, UserDetails user) {
+        return BookingRoomEvent.builder()
+                .bookingId(booking.getId())
+                .checkInDate(booking.getCheckInDate())
+                .checkOutDate(booking.getCheckOutDate())
+                .userId(userService.getUserByName(user.getUsername()).getId())
+                .roomId(booking.getRoom().getId())
                 .build();
     }
 }

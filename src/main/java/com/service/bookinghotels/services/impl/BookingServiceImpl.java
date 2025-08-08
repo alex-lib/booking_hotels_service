@@ -7,7 +7,7 @@ import com.service.bookinghotels.exceptions.RoomIsBusyException;
 import com.service.bookinghotels.repositories.BookingRepository;
 import com.service.bookinghotels.repositories.RoomRepository;
 import com.service.bookinghotels.services.BookingService;
-import com.service.bookinghotels.services.UnavailableDatesService;
+import com.service.bookinghotels.services.UnavailableDateService;
 import com.service.bookinghotels.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class BookingServiceImpl implements BookingService {
 
     private final RoomRepository roomRepository;
 
-    private final UnavailableDatesService unavailableDatesService;
+    private final UnavailableDateService unavailableDateService;
 
     @Transactional
     @Override
@@ -94,7 +94,7 @@ public class BookingServiceImpl implements BookingService {
                     .format("Room is busy on some or all of pointed dates: {0}. Total busy dates: {1}",
                             datesToLive, room.getBusyDates().stream().map(UnavailableDate::getDate).collect(Collectors.toSet())));
         }
-        unavailableDatesService.addBusyDates(room.getId(), datesToLive);
+        unavailableDateService.addBusyDates(room.getId(), datesToLive);
         roomRepository.save(room);
     }
 
@@ -107,7 +107,7 @@ public class BookingServiceImpl implements BookingService {
              i = i.plusDays(1)) {
             datesToLiveBeforeUpdating.add(i);
         }
-        unavailableDatesService.deleteBusyDates(room.getId(), datesToLiveBeforeUpdating);
+        unavailableDateService.deleteBusyDates(room.getId(), datesToLiveBeforeUpdating);
         roomRepository.save(room);
     }
 }

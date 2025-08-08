@@ -5,12 +5,12 @@ import com.service.bookinghotels.mappers.user.UserMapper;
 import com.service.bookinghotels.web.dto.booking.BookingRequest;
 import com.service.bookinghotels.web.dto.booking.BookingResponse;
 import com.service.bookinghotels.web.dto.booking.BookingsListResponse;
+import com.service.bookinghotels.web.dto.kafkadto.BookingRoomEvent;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.List;
 
 @DecoratedWith(BookingMapperDelegate.class)
@@ -34,4 +34,6 @@ public interface BookingMapper {
                 .bookings(list)
                 .build();
     }
+
+    BookingRoomEvent bookingToBookingRoomEvent(Booking booking, UserDetails user);
 }

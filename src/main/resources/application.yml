@@ -1,4 +1,11 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/appdatabase?authSource=admin
+  main:
+    allow-bean-definition-overriding: true
+  kafka:
+    bootstrap-servers: localhost:29092
   h2:
     console:
       enabled: true
@@ -10,8 +17,7 @@ spring:
       schema: app_schema
       connection-init-sql: CREATE SCHEMA IF NOT EXISTS app_schema;
       connection-timeout: 10000
-#    url: jdbc:h2:mem:bookservicedb
-#    driver-class-name: org.h2.Driver
+
   jpa:
     hibernate:
       ddl-auto: 'update'
@@ -21,12 +27,11 @@ spring:
 server:
   port: 8890
 
-#springdoc:
-#  swagger-ui:
-#    enabled: true
-#  api-docs:
-#    enabled: true
-
 app:
   security:
     type: db
+  kafka:
+    registrationUserTopic: "registration-user-topic"
+    registrationUserGroupId: "registration-user-group-id"
+    bookingRoomTopic: "booking-room-topic"
+    bookingRoomGroupId: "booking-room-group-id"
