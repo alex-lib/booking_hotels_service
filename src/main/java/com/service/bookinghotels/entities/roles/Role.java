@@ -9,18 +9,20 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Data
 @Entity
-@Table(name = "authorities")
+@Table(name = "roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "authority")
     private RoleType authority;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "name")
+    @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User user;

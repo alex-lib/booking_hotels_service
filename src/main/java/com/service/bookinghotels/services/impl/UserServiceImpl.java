@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByName(String name) {
         log.info("Call method getUserByName to find user with name: {}", name);
-        return userRepository.getUserByName(name);
+        return userRepository.findByName(name);
     }
 
     @Transactional(readOnly = true)
