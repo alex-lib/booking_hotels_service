@@ -4,26 +4,22 @@ spring:
       mode: ALWAYS
   data:
     mongodb:
-      uri: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/${MONGO_INITDB_DATABASE}?authSource=admin
+      uri: mongodb://root:root@mongodb:27017/appdatabase?authSource=admin
   main:
     allow-bean-definition-overriding: true
   kafka:
-    bootstrap-servers: kafka:${KAFKA_PORT}
-#  h2:
-#    console:
-#      enabled: true
+    bootstrap-servers: kafka:9092
+  h2:
+    console:
+      enabled: true
   datasource:
-    url: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
-#    hikari:
-#      schema: app_schema
-#      connection-init-sql: CREATE SCHEMA IF NOT EXISTS app_schema;
-#      connection-timeout: 10000
+    url: jdbc:postgresql://postgres:5432/postgres
+    username: postgres
+    password: 3101
 
   jpa:
     hibernate:
-      ddl-auto: 'create-drop'
+      ddl-auto: update
     generate-ddl: true
     show-sql: true
 
@@ -35,6 +31,9 @@ app:
     registrationUserGroupId: "registration-user-group-id"
     bookingRoomTopic: "booking-room-topic"
     bookingRoomGroupId: "booking-room-group-id"
+
+server:
+  port: 8890
 
 logging:
   level:
